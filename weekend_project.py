@@ -1,117 +1,98 @@
-# Project Requirements
+# To Do List Application
 
+"""In this project, you will apply your Python programming skills to create a functional To-Do List 
+Application from scratch. The objective of this project is to reinforce your understanding of Python 
+syntax, data types, control structures, functions, and error handling while building a practical and 
+interactive application.
+"""
 
-# User Interface (UI):
-# Create a command-line interface (CLI) for the To-Do List Application.
-# Display a welcoming message and a menu with the following options:
-# ```
-# Welcome to the To-Do List App!
-#     Menu:
-#     1. Add a task
-#     2. View tasks
-#     3. Mark a task as complete
-#     4. Delete a task
-#     5. Quit
-
-#     ```
-# To-Do List Features:
-# Implement the following features for the To-Do List:
-# Adding a task
-# Viewing the list of tasks with from Incomplete and Complete tasks.
-# Marking a task as complete.
-# Deleting a task.
-# Quitting the application.
-# User Interaction:
-# Allow users to interact with the application by selecting menu options using input().
-# Implement input validation to handle unexpected user input gracefully.
-# Error Handling:
-# Implement error handling using try, except, else, and finally blocks to handle potential issues.
-# Code Organization:
-# Organize your code into functions to promote modularity and readability.
-# Use meaningful function names with appropriate comments and docstrings for clarity.
-# Testing and Debugging:
-# Thoroughly test your application to identify and fix any bugs.
-# Consider edge cases, such as empty task lists or incorrect user input.
-# Documentation:
-# Include a README file that explains how to run the application and provides a brief overview of its features.
-# Optional Features (Bonus):
-# If you feel adventurous, you can add extra features like task priorities, due dates, or color-coding tasks based on their status.
-# GitHub Repository:
-# Create a GitHub repository for your project.
-# Commit your code to the repository regularly.
-# Include a link to your GitHub repository in your project documentation.
-
-# Submission
-
-# Submit your project, including all source code files and the README, to your instructor or designated platform.
-
-# Project Tips
-
-# Start by designing a simple user interface and plan the program's structure.
-# Test your code frequently as you build each feature to ensure everything works as expected.
-# Collaborate with fellow learners and seek help when needed. Remember, learning is a communal effort!
-
-# By completing this project, you'll gain practical experience in Python programming and have a useful To-Do List Application to help you stay organized in your own life.
-
-
-# Happy coding! 📋🐍
-
-to_do_list = []
-completed_task = []
+# below creates lists
+to_do_list = [] 
+completed_task = [] 
 removed_tasks = []
 
+# define functions for each interaction that a task can have with the list 
+""" use if and else statements to either complete the interaction or guide the user to enter an 
+appropriate response
+"""
+# .append will add input to the appropriate parameter
+# .remove will remove input from appropriate parameter
+# try will try to do the appropriate action, except if an unrecognized input is given
+# ValueError will give an error code if the user gives an unrecognized user input
+# another set of if elif is introduced to take input and guide the user appropriately
+
 def add_task(list):
-    task= input("What would you like to add to the list? ")
-    if task not in list:
+    task= input("What would you like to add to the list? ").lower()
+    if task not in list: 
         list.append(task)
         print("Task added to list, get after it!")
     else:
         print("We dont have time to do this more than once, get it right!")
-
 def remove_task(list, removed):
-    task = input("What would you like to take off the list? ")
+    task = input("What would you like to take off the list? ").lower()
     if task in list:
         removed.append(task)
         list.remove(task)
         print("Task removed, lets not make a habit of this!")
     else:
-        print("Task not on list, lets get that added!")
+       print("Task not on list, we can not remove that which does not exist.")
+    
 def mark_completed(list, completed):
-    task = input("What did you crush today?")
+    task = input("What did you crush today? ").lower()
     try:
         list.remove(task)
         completed.append(task)
         print("Great job, keep it up!")
     except ValueError:
-        print("Whoaaa there buddy! Can't complete things that aren't on the list!")
+        response = input("Whoaaa there buddy! The task wasn't on your list are you sure you did this? ").lower()
+        if response == "yes":
+                completed.append(task)
+                print("Way to go above and beyond!")
+        elif response == "no":
+                print("May be next weekend...")
 def view_list(list, completed, remove):
     return f""""Keep going we still need to {list}."
-"Great Job! You {completed}, keep up the good work!"
-"You removed {remove}, lets not make a habit of this"
+"Great Job! You completed {completed}, keep up the good work!"
+"You removed {remove}, lets not make a habit of this."
 """
-
+# The below function runs all the above functions based off of user input of what they would like to do
+# print will print the text in menu being the guide for the application
+# while True will keep that application running until the user selects quit, because it is followed with break
+""" if and elif guide user responses to navigate the application and use user input to complete the 
+appropriate action within application.
+"""
+# else will force the user to give an appropriate response if a prompt from the menu is not entered
+# Using the if and elif create a user input to complete the functions
+# run_app() calls the above function and runs it
 def run_app():
-    print("""Welcome to the To-Do List App!
-     Menu:
-     1. Add a task
-     2. View tasks
-     3. Mark completed
-     4. Remove a task
-     5. Quit""")
+    print("Welcome to the To-Do List App!")
+    print()
     while True:
-        response = input("What would you like to do? ")
-        if response == "Add a task":
+        response = input("""What would you like to do?
+    1. Add a task
+    2. View tasks
+    3. Mark completed
+    4. Remove a task
+    5. Quit
+                         
+    I would like to """).lower()
+        if response == "1":
             add_task(to_do_list)
-        elif response == "View tasks":
+            print()
+        elif response == "2":
             print(view_list(to_do_list, completed_task, removed_tasks))
-        elif response == "Mark completed":
+            print()
+        elif response == "3":
             mark_completed(to_do_list, completed_task)
-        elif response == "Remove a task":
+            print()
+        elif response == "4":
             remove_task(to_do_list, removed_tasks)
-        elif response == "Quit":
+            print()
+        elif response == "5":
             print("GREAT JOB WITH YOUR TASKS TODAY!")
+            print()
             break
         else:
             print("Please enter a valid response")
-
+            print()
 run_app()
